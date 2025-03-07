@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 
-Widget buildButton(String text) {
+Widget buildButton(String text, VoidCallback onPressed) {
   return SizedBox(
-    width: double.infinity, // Đảm bảo button có cùng chiều rộng
+    width: double.infinity,
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white, // Màu nền trắng
+          backgroundColor: Colors.white, 
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
           padding: EdgeInsets.symmetric(vertical: 15),
-          elevation: 2, // Đổ bóng nhẹ
+          elevation: 2, 
         ),
-        onPressed: () {},
+       onPressed: onPressed,
         child: Text(
           text,
           style: TextStyle(
-            color: Color.fromARGB(255, 7, 140, 27), // Màu chữ xanh lá
+            color: Color.fromARGB(255, 7, 140, 27), 
             fontSize: 16,
-            fontWeight: FontWeight.bold, // Đậm hơn để giống ảnh
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
