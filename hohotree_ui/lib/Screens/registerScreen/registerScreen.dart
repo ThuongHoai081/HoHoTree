@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hohotree/Screens/LoginScreen/loginScreen.dart';
+import 'package:hohotree/Services/AuthService/authService.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -9,12 +10,27 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+
+  void _handleRegister() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+    String confirmPassword = _confirmPasswordController.text;
+    
+    String message = await AuthService.register(email, password, confirmPassword);
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Hình nền mờ
           Positioned.fill(
             child: Opacity(
               opacity: 0.7,
@@ -53,8 +69,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       style: TextStyle(color: Colors.grey),
                     ),
                     const SizedBox(height: 20),
-                    
                     TextField(
+                      controller: _emailController,
                       decoration: InputDecoration(
                         labelText: "Email",
                         border: OutlineInputBorder(
@@ -63,8 +79,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-
                     TextField(
+                      controller: _passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: "Password",
@@ -74,8 +90,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-
                     TextField(
+                      controller: _confirmPasswordController,
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: "Confirm Password",
@@ -85,12 +101,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: _handleRegister,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           shape: RoundedRectangleBorder(
