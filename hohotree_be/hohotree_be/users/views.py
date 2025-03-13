@@ -1,8 +1,8 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from .serializers import UserSerializer
+from ..users.serializers import UserSerializer
 from django.core.mail import send_mail
 from django.conf import settings
 from django.shortcuts import get_object_or_404
@@ -10,7 +10,9 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import render
-# xử lí đăng kí tài khoản ê code cũng dễ hiểu mà chắc hoài hiểu khỏi giải thích hì
+
+User = get_user_model()
+
 class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -56,9 +58,3 @@ class ActivateUserView(APIView):
             'description': 'Liên kết kích hoạt của bạn đã hết hạn hoặc không hợp lệ. Vui lòng đăng ký lại.',
         }
         return render(request, 'activation_success.html', context=context)
-
-# đăng nhập
-class login(APIView):
-    def post(self,request):
-        username = request.data.get("username")
-        password = request.data.get("password")
