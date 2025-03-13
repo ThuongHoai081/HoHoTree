@@ -40,7 +40,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'hohotree',
         'USER': 'root',
-        'PASSWORD': '', 
+        'PASSWORD': 'th4940', 
         'HOST': 'localhost',    
         'PORT': '3306', 
     }
