@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(max_length=50, min_length=6)
+  #  email = serializers.EmailField(max_length=50, min_length=6)
     password = serializers.CharField(max_length=150, write_only=True)
 
     class Meta:
@@ -30,10 +30,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(
-            name=validated_data["name"],
-            email=validated_data["email"],
-            password=validated_data["password"]
+            name=validated_data['name'],
+            email=validated_data['email'],
+            password=validated_data['password']
         )
-        user.is_active = False
+        user.is_active = False 
         user.save()
         return user
