@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hohotree/Screens/MsgScreen/CustomSnackBar.dart';
 import 'package:hohotree/Screens/registerScreen/registerScreen.dart';
+import 'package:hohotree/Services/AuthService/authService.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -9,6 +11,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  void _handleLogin() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+    
+    String message = await AuthService.login(email, password);
+    
+    bool isSuccess = message.startsWith("Login success");
+    CustomSnackBar.show(context, message, isSuccess);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 20),
                     
                     TextField(
+                      controller: _emailController,
                       decoration: InputDecoration(
                         labelText: "Email",
                         border: OutlineInputBorder(
@@ -64,6 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 15),
 
                     TextField(
+                      controller: _passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: "Password",
@@ -78,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: _handleLogin,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           shape: RoundedRectangleBorder(

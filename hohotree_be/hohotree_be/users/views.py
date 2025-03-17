@@ -20,9 +20,12 @@ class RegisterView(APIView):
             user = serializer.save()
             #Tạo một token để xác thực email.
             token = default_token_generator.make_token(user)
+            print("token" + token)
             # Mã hoá user
             uid = urlsafe_base64_encode(force_bytes(user.pk))
-            activation_link = f"http://localhost:8000/api/activate/{uid}/{token}/"
+            print("uid" + uid)
+            activation_link = f"http://localhost:8000/api/auth/activate/{uid}/{token}/"
+            print("activation_link" + activation_link)
             send_mail(
                 'Xác nhận tài khoản',
                 f'Nhấp vào liên kết sau để xác nhận tài khoản của bạn: {activation_link}',

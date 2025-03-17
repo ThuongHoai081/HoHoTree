@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hohotree/Screens/LoginScreen/loginScreen.dart';
+import 'package:hohotree/Screens/MsgScreen/CustomSnackBar.dart';
 import 'package:hohotree/Services/AuthService/authService.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -20,10 +21,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String confirmPassword = _confirmPasswordController.text;
     
     String message = await AuthService.register(email, password, confirmPassword);
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    bool isSuccess = message.startsWith("Registration successful");
+    CustomSnackBar.show(context, message, isSuccess);
   }
 
   @override

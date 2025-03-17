@@ -9,12 +9,12 @@ class AuthService {
 
     try {
       final response = await http.post(
-        Uri.parse("http://localhost:8000/api/register/"),
+        Uri.parse("http://localhost:8000/api/auth/register/"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           "email": email,
           "password": password,
-          "username": email.split('@')[0]
+          "name": email.split('@')[0]
         }),
       );
 
@@ -22,6 +22,27 @@ class AuthService {
         return "Registration successful. Check your email to activate your account.";
       } else {
         return "Registration failed: ${jsonDecode(response.body)}";
+      }
+    } catch (e) {
+      return "An error occurred: $e";
+    }
+  }
+
+  static Future<String> login(String email, String password) async {
+    try {
+      final response = await http.post(
+        Uri.parse("http://localhost:8000/api/auth/login/"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "email": email,
+          "password": password,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return "Login success";
+      } else {
+        return "Login failed: ${jsonDecode(response.body)}";
       }
     } catch (e) {
       return "An error occurred: $e";
