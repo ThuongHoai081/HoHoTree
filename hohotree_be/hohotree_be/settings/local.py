@@ -16,6 +16,10 @@ ALLOWED_HOSTS = ["*"]
 HOST = "http://localhost:8000/"
 
 # Database
+SUPABASE_URL = "https://kyyiekngpfhpoldvlpmq.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5eWlla25ncGZocG9sZHZscG1xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2ODc3NDcsImV4cCI6MjA1OTI2Mzc0N30.SMAfUS7bQ1IyZh54WdJH0mxFEX61LOhsDRq43cDKLDo"
+
+
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 # DATABASES = {

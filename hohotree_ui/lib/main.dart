@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hohotree/Screens/LoginScreen/loginScreen.dart';
-import 'package:hohotree/Screens/OnboardingScreen/onBoardingScreen.dart';
-import 'package:hohotree/Screens/registerScreen/registerScreen.dart';
+import 'router/app_router.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -11,13 +10,9 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-      ),
-      home: RegisterScreen(),
-    );
-  }
+  Widget build(BuildContext context) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: AppRouter.login,
+        onGenerateRoute: AppRouter.onGenerateRoute,
+      );
 }
-
