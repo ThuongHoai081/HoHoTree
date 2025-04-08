@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
       await _analyzeImage(_image!);
     }
   }
-  // Xử lí khi gửi ảnh nha bành hoài 
+
   Future<void> _analyzeImage(File imageFile) async {
     var request = http.MultipartRequest(
       'POST', 
