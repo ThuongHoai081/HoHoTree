@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("id", "name", "email", "password")
+        fields = ("id", "full_name", "email", "password")
 
     def validate_email(self, value):
         # Kiểm tra email đã tồn tại trong cơ sở dữ liệu
@@ -36,12 +36,11 @@ class UserSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        # Tạo người dùng mới
         user = User.objects.create_user(
-            name=validated_data['name'],
+            name=validated_data['full_name'],
             email=validated_data['email'],
             password=validated_data['password']
         )
-        user.is_active = False  # Nếu cần, có thể bỏ dòng này nếu không yêu cầu
+        user.is_active = False
         user.save()
         return user

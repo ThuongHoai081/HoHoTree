@@ -17,7 +17,7 @@ HOST = "http://localhost:8000/"
 
 # Database
 SUPABASE_URL = "https://kyyiekngpfhpoldvlpmq.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5eWlla25ncGZocG9sZHZscG1xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2ODc3NDcsImV4cCI6MjA1OTI2Mzc0N30.SMAfUS7bQ1IyZh54WdJH0mxFEX61LOhsDRq43cDKLDo"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5eWlla25ncGZocG9sZHZscG1xIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MzY4Nzc0NywiZXhwIjoyMDU5MjYzNzQ3fQ.L8HWR-MPEKNnRDuqqEQ92QdtKnqZiMOW16ev9UjOX2E"
 
 
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -35,18 +35,29 @@ SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
+# DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.sqlite3',
 #        'NAME': BASE_DIR / 'db.sqlite3',
 #    }
+#     # 'default': {
+#     #     'ENGINE': 'django.db.backends.mysql',
+#     #     'NAME': 'hohotree',
+#     #     'USER': 'root',
+#     #     'PASSWORD': '', 
+#     #     'HOST': 'localhost',    
+#     #     'PORT': '3306', 
+#     # }
+# }
+
+DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hohotree',
-        'USER': 'root',
-        'PASSWORD': '', 
-        'HOST': 'localhost',    
-        'PORT': '3306', 
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres', 
+        'USER': 'postgres.kyyiekngpfhpoldvlpmq',
+        'PASSWORD': 'th123456789th12345678',
+        'HOST': 'aws-0-ap-southeast-1.pooler.supabase.com',
+        'PORT': '6543',
     }
 }
 

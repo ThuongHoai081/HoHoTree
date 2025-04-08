@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
 import '../Screens/LoginScreen/loginScreen.dart';
+import '../Screens/OnboardingScreen/onBoardingScreen.dart';
+import '../Screens/HomeScreen/homeScreens.dart';
+import '../Screens/registerScreen/registerScreen.dart';
 
 abstract final class AppRouter {
   static const String login = '/login';
-  static const String root = '/root';
-  static const String addEditProduct = '/add_edit_product';
+  static const String register = '/register';
+  static const String root = '/';
+  static const String msg = '/msg';
+  static const String home = '/home';
 
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case root:
+        return MaterialPageRoute(builder: (_) => const onBoardingScreen());
       case login:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
-      // case root:
-      //   return MaterialPageRoute(builder: (_) => const ProductListScreen());
-      // case addEditProduct:
-      //   final product = settings.arguments as Product?;
-      //   return MaterialPageRoute(
-      //       builder: (_) => AddEditProductScreen(product: product));
-      // default:
-      //   return MaterialPageRoute(builder: (_) => const LoginScreen());
+      case register:
+        return MaterialPageRoute(builder: (_) => const RegisterScreen());
+      case home:
+        return MaterialPageRoute(builder: (_) => const HomeScreen());
+      default:
+        return MaterialPageRoute(builder: (_) => const onBoardingScreen());
     }
   }
 }
