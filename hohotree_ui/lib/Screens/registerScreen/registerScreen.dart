@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hohotree/Screens/LoginScreen/loginScreen.dart';
 import 'package:hohotree/Screens/MsgScreen/CustomSnackBar.dart';
 import 'package:hohotree/Services/AuthService/authService.dart';
+import 'package:hohotree/data/dtos/auth/register_request_dto.dart';
+import 'package:hohotree/router/app_router.dart';
+import '../../data/models/base_response.dart';
+import '../LoginScreen/loginScreen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -11,18 +14,40 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   void _handleRegister() async {
     String email = _emailController.text;
     String password = _passwordController.text;
     String confirmPassword = _confirmPasswordController.text;
-    
-    String message = await AuthService.register(email, password, confirmPassword);
-    bool isSuccess = message.startsWith("Registration successful");
-    CustomSnackBar.show(context, message, isSuccess);
+    String fullName = _fullNameController.text;
+
+    if (password != confirmPassword) {
+      CustomSnackBar.show(context, "Passwords do not match", false);
+      return;
+    }
+
+    RegisterRequestDTO request = RegisterRequestDTO(
+      fullName: fullName,
+      email: email,
+      password: password,
+    );
+
+    final BaseResponse response = await AuthService.register(request);
+    debugPrint("Register response: ${response.status}");
+    if (response.status == "201") {
+      CustomSnackBar.show(
+          context, response.message ?? "Registration successful", true);
+      Navigator.pushReplacementNamed(context, AppRouter.login);
+    } else {
+      CustomSnackBar.show(
+          context, response.message ?? "Registration failed", false);
+      debugPrint("Register failed: ${response.message}");
+    }
   }
 
   @override
@@ -60,12 +85,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     const Text(
                       "Create Account",
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 5),
                     const Text(
                       "Sign up to get started",
                       style: TextStyle(color: Colors.grey),
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: _fullNameController,
+                      decoration: InputDecoration(
+                        labelText: "Full Name",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     TextField(
@@ -111,7 +147,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: const Text("Sign up", style: TextStyle(fontSize: 16)),
+                        child: const Text("Sign up",
+                            style: TextStyle(fontSize: 16)),
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -121,12 +158,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         const Text("Already have an account?"),
                         TextButton(
                           onPressed: () {
-                            Navigator.pushReplacement(
+                            Navigator.pushReplacementNamed(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen()),
+                              AppRouter.login,
                             );
                           },
-                          child: const Text("Sign in", style: TextStyle(color: Colors.green)),
+                          child: const Text("Sign in",
+                              style: TextStyle(color: Colors.green)),
                         ),
                       ],
                     ),

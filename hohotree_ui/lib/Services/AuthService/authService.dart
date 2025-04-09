@@ -1,51 +1,52 @@
 import 'dart:convert';
+import 'package:hohotree/data/dtos/auth/login_request_dto.dart';
+import '../../common/constants/endpoints.dart';
 import 'package:http/http.dart' as http;
+import '../../data/dtos/auth/register_request_dto.dart';
+import '../../common/util/dio.dart';
+import 'package:dio/dio.dart';
+import '../../data/models/base_response.dart';
 
 class AuthService {
-  static Future<String> register(String email, String password, String confirmPassword) async {
-    if (password != confirmPassword) {
-      return "Passwords do not match";
-    }
-
+  static Future<BaseResponse> register(RegisterRequestDTO data) async {
     try {
-      final response = await http.post(
-        Uri.parse("http://localhost:8000/api/auth/register/"),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "email": email,
-          "password": password,
-          "name": email.split('@')[0]
-        }),
+      final response = await DioClient.dio.post(
+        Endpoints.register,
+        data: data.toJson(),
       );
 
-      if (response.statusCode == 201) {
-        return "Registration successful. Check your email to activate your account.";
-      } else {
-        return "Registration failed: ${jsonDecode(response.body)}";
-      }
+      return BaseResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      return BaseResponse(
+        status: e.response?.statusCode.toString() ?? "500",
+        message: e.response?.data["message"] ?? e.message,
+      );
     } catch (e) {
-      return "An error occurred: $e";
+      return BaseResponse(
+        status: "500",
+        message: "An unexpected error occurred: $e",
+      );
     }
   }
 
-  static Future<String> login(String email, String password) async {
+  static Future<BaseResponse> login(LoginRequestDTO data) async {
     try {
-      final response = await http.post(
-        Uri.parse("http://localhost:8000/api/auth/login/"),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "email": email,
-          "password": password,
-        }),
+      final response = await DioClient.dio.post(
+        Endpoints.login,
+        data: data.toJson(),
       );
 
-      if (response.statusCode == 200) {
-        return "Login success";
-      } else {
-        return "Login failed: ${jsonDecode(response.body)}";
-      }
+      return BaseResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      return BaseResponse(
+        status: e.response?.statusCode.toString() ?? "500",
+        message: e.response?.data["message"] ?? e.message,
+      );
     } catch (e) {
-      return "An error occurred: $e";
+      return BaseResponse(
+        status: "500",
+        message: "An unexpected error occurred: $e",
+      );
     }
   }
 }
