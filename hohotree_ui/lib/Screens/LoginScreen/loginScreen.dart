@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
     LoginRequestDTO request = LoginRequestDTO(email: email, password: password);
 
     final BaseResponse response = await AuthService.login(request);
-    if (response.status == "200") {
+    if (response.statusCode == 200) {
       CustomSnackBar.show(
           context, response.message ?? "Login successful", true);
       Navigator.pushReplacementNamed(context, AppRouter.home);

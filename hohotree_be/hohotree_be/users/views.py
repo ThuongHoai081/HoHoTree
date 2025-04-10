@@ -76,8 +76,7 @@ class SupabaseLoginView(APIView):
         # Lưu thông tin người dùng vào session
         return Response({
             "access_token": response.session.access_token,
-            "refresh_token": response.session.refresh_token,
-            "status": "200"
+            "refresh_token": response.session.refresh_token
         }, status=status.HTTP_200_OK)
 
 

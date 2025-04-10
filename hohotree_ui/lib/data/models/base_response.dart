@@ -2,16 +2,23 @@ import 'package:json_annotation/json_annotation.dart';
 part 'base_response.g.dart';
 
 @JsonSerializable(createToJson: false)
+
 class BaseResponse {
+  final int? statusCode;
   final String? message;
-  final String? status;
+  final dynamic data;
 
-  BaseResponse({this.message, this.status});
+  BaseResponse({
+    this.statusCode,
+    this.message,
+    this.data,
+  });
 
-  factory BaseResponse.fromJson(Map<String, dynamic> json) {
+  factory BaseResponse.fromJson(Map<String, dynamic> json, {int? statusCode}) {
     return BaseResponse(
+      statusCode: statusCode,
       message: json['message'],
-      status: json['status']?.toString(),
+      data: json['data'],
     );
   }
 }

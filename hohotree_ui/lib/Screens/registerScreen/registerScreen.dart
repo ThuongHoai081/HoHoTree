@@ -38,8 +38,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
 
     final BaseResponse response = await AuthService.register(request);
-    debugPrint("Register response: ${response.status}");
-    if (response.status == "201") {
+    debugPrint("Register response: ${response.statusCode}");
+    if (response.statusCode == 201) {
       CustomSnackBar.show(
           context, response.message ?? "Registration successful", true);
       Navigator.pushReplacementNamed(context, AppRouter.login);

@@ -18,12 +18,12 @@ class AuthService {
       return BaseResponse.fromJson(response.data);
     } on DioException catch (e) {
       return BaseResponse(
-        status: e.response?.statusCode.toString() ?? "500",
+        statusCode: e.response?.statusCode ?? 500,
         message: e.response?.data["message"] ?? e.message,
       );
     } catch (e) {
       return BaseResponse(
-        status: "500",
+        statusCode: 500,
         message: "An unexpected error occurred: $e",
       );
     }
@@ -39,12 +39,12 @@ class AuthService {
       return BaseResponse.fromJson(response.data);
     } on DioException catch (e) {
       return BaseResponse(
-        status: e.response?.statusCode.toString() ?? "500",
+        statusCode: e.response?.statusCode ?? 500,
         message: e.response?.data["message"] ?? e.message,
       );
     } catch (e) {
       return BaseResponse(
-        status: "500",
+        statusCode: 500,
         message: "An unexpected error occurred: $e",
       );
     }
