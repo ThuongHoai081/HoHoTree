@@ -63,3 +63,7 @@ coverage.xml
 
 # Git
 *.orig
+
+# Flutter build/generated files
+**/generated_plugin_registrant.*
+**/generated_plugins.*
