@@ -67,3 +67,4 @@ coverage.xml
 # Flutter build/generated files
 **/generated_plugin_registrant.*
 **/generated_plugins.*
+hohotree_ui/macos/Flutter/GeneratedPluginRegistrant.swift
