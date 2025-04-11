@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: AppRouter.login,
+        initialRoute: AppRouter.root,
         onGenerateRoute: AppRouter.onGenerateRoute,
       );
 }

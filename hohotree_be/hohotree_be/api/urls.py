@@ -13,6 +13,8 @@
 # ]
 
 from django.urls import path, include
+from hohotree_be.plant_disease.views import predict_image
+
 from hohotree_be.users.views import RegisterView, ActivateUserView, SupabaseLoginView, SupabaseRefreshTokenView
 
 urlpatterns = [
@@ -24,4 +26,5 @@ urlpatterns = [
     path("auth/activate/<slug:token>/", ActivateUserView.as_view(), name="activate"),
     path("auth/login/", SupabaseLoginView.as_view(), name="login"),
     path("auth/refresh-token/", SupabaseRefreshTokenView.as_view(), name="refresh_token"),
+    path("plant/", predict_image),
 ]
