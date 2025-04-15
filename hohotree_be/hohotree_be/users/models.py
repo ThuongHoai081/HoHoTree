@@ -13,7 +13,7 @@ class UserManager(BaseUserManager):
         email = self.normalize_email(email)
 
         user = self.model(email=email, fullName=fullName, **extra_fields)
-        user.password = make_password(password) 
+        if password: user.password = user.set_password(password) 
         user.save(using=self._db)
         return user
 
@@ -33,13 +33,14 @@ class User(AbstractUser):
     last_name = None
 
     email = models.EmailField(_("email address"), unique=True)
-    full_name = models.CharField(_("full_name"), max_length=150)
+    full_name = models.CharField(_("full_name"), max_length=150, default="Unknown")
+    status = models.CharField(_("status"), max_length=20, default="pending")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["full_name"]  # Ensure "name" is required
+    REQUIRED_FIELDS = ["full_name"]  
 
     objects = UserManager()
 

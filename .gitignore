@@ -14,6 +14,7 @@ ENV/
 *.venv
 hohotree_be/venv310/
 venv310/
+myenv/
 
 # VS Code / IDE
 .vscode/
