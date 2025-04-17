@@ -5,8 +5,12 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hohotree/Screens/HomeScreen/widget/buildBtn.dart';
+import 'package:hohotree/Screens/ProfileScreen/profileScreens.dart';
+import 'package:hohotree/Services/MoMoService/momoService.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   File? _imageFile;
   Uint8List? _imageBytes;
   String _result = "";
+  int _currentIndex = 0;
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
@@ -39,6 +44,21 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
+  Future<void> _handlePayment() async {
+  final payUrl = await MomoService.createMomoPayment("1000");
+
+  if (payUrl != null) {
+    if (await canLaunchUrl(Uri.parse(payUrl))) {
+      await launchUrl(Uri.parse(payUrl), mode: LaunchMode.externalApplication);
+    } else {
+      print("Không thể mở URL: $payUrl");
+    }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Không thể tạo thanh toán")),
+    );
+  }
+}
 
   Future<void> _analyzeImage(File imageFile) async {
     var request = http.MultipartRequest(
@@ -74,8 +94,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
+    Widget body;
+
+    if (_currentIndex == 3) {
+      body = const ProfileScreen();
+    } else {
+      body = Stack(
         children: [
           Positioned.fill(
             child: Image.asset(
@@ -86,12 +110,12 @@ class _HomeScreenState extends State<HomeScreen> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
                 child: Text(
                   'Xác định một căn bệnh trong 1 cú nhấp chuột',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -112,14 +136,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 _result.isNotEmpty ? _result : 'Kết quả sẽ hiển thị ở đây',
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
               ),
+              const SizedBox(height: 10),
+              buildButton('Thanh toán MoMo', _handlePayment),
             ],
           ),
         ],
-      ),
+      );
+    }
+
+    return Scaffold(
+      body: body,
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         selectedItemColor: Colors.green,
         unselectedItemColor: Colors.grey,
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
@@ -132,6 +168,10 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Cài đặt',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.supervised_user_circle),
+            label: 'Người dùng',
           ),
         ],
       ),

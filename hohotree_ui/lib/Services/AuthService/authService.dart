@@ -26,6 +26,7 @@ class AuthService {
         statusCode: 500,
         message: "An unexpected error occurred: $e",
       );
+      print(e);
     }
   }
 

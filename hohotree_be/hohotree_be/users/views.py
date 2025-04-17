@@ -16,6 +16,7 @@ supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
+        print(request.data)
         if serializer.is_valid():
             email = serializer.validated_data['email']
             password = serializer.validated_data['password']
@@ -28,13 +29,14 @@ class RegisterView(APIView):
             })
 
             user_data = {
-                "id": response.user.id, 
+                "id": "20", 
                 "full_name": fullname,
                 "email": email,
-                "status": "pending",  
+                "status": "pending",
+                "password": password
             }
 
-            supabase.table('users').insert(user_data).execute()
+            supabase.table('users_user').insert(user_data).execute()
             
             if not response.user:
                 return Response(
@@ -46,7 +48,7 @@ class RegisterView(APIView):
                 {'message': 'Vui lòng kiểm tra email để xác thực tài khoản.', "status": "201"},
                 status=status.HTTP_201_CREATED
             )
-
+        print("Dữ liệu không hợp lệ:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class ActivateUserView(APIView):
     def get(self, request, token):
