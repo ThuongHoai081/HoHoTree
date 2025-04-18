@@ -12,7 +12,7 @@ from .models import User
 SUPABASE_URL = settings.SUPABASE_URL
 SUPABASE_KEY = settings.SUPABASE_KEY
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-
+Status = User.Status  
 class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -21,6 +21,7 @@ class RegisterView(APIView):
             email = serializer.validated_data['email']
             password = serializer.validated_data['password']
             fullname = serializer.validated_data['full_name']
+
             # Đăng ký user trên Supabase
             response = supabase.auth.sign_up({
                 "full_name": fullname,
@@ -29,11 +30,9 @@ class RegisterView(APIView):
             })
 
             user_data = {
-                "id": "20", 
                 "full_name": fullname,
                 "email": email,
-                "status": "pending",
-                "password": password
+                "status": Status.PENDING,
             }
 
             supabase.table('users_user').insert(user_data).execute()
@@ -92,17 +91,21 @@ class SupabaseLoginView(APIView):
     def post(self, request):
         email = request.data.get("email")
         password = request.data.get("password")
-
+        print("Dữ liệu:", request.data)
         # Gọi API đăng nhập Supabase
         response = supabase.auth.sign_in_with_password({
             "email": email,
             "password": password
         })
+        print("Response từ Supabase:", response)
+        user = response.user
+            # Trích xuất email_verified từ user_metadata
+        email_verified = user.user_metadata.get("email_verified", False)
 
-        user = response.user 
-        if not user.email_verified:
+        if not email_verified:
             return Response({'error': 'Tài khoản chưa được xác thực. Vui lòng kiểm tra email để xác nhận tài khoản.'},
                             status=status.HTTP_400_BAD_REQUEST)
+
         
         if not response.session:
                 return Response({'error': 'Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.'},
@@ -110,7 +113,8 @@ class SupabaseLoginView(APIView):
 
         return Response({
             "access_token": response.session.access_token,
-            "refresh_token": response.session.refresh_token
+            "refresh_token": response.session.refresh_token,
+            "status": "200"
         }, status=status.HTTP_200_OK)
 
 

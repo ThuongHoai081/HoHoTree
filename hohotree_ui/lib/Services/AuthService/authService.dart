@@ -26,7 +26,6 @@ class AuthService {
         statusCode: 500,
         message: "An unexpected error occurred: $e",
       );
-      print(e);
     }
   }
 
@@ -36,8 +35,8 @@ class AuthService {
         Endpoints.login,
         data: data.toJson(),
       );
-
-      return BaseResponse.fromJson(response.data);
+      return BaseResponse.fromJson(response.data,
+          statusCode: response.statusCode);
     } on DioException catch (e) {
       return BaseResponse(
         statusCode: e.response?.statusCode ?? 500,

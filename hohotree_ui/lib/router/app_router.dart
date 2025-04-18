@@ -14,7 +14,8 @@ abstract final class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case root:
-        return MaterialPageRoute(builder: (_) => const onBoardingScreen());
+        // return MaterialPageRoute(builder: (_) => const onBoardingScreen());
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
       case login:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case register:

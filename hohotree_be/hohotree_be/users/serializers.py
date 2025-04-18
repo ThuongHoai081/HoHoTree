@@ -5,12 +5,14 @@ from django.core.validators import EmailValidator
 
 User = get_user_model()
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.Serializer):
+    full_name = serializers.CharField(max_length=150, required=True)
+    email = serializers.EmailField(required=True)
     password = serializers.CharField(max_length=150, write_only=True)
 
     class Meta:
         model = User
-        fields = ("id", "full_name", "email", "password")
+        fields = ("id", "full_name", "email")
 
     def validate_email(self, value):
         # Kiểm tra email đã tồn tại trong cơ sở dữ liệu
@@ -38,8 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(
             full_name=validated_data['full_name'],
-            email=validated_data['email'],
-            password=validated_data['password']
+            email=validated_data['email']
         )
         user.is_active = False
         user.save()
