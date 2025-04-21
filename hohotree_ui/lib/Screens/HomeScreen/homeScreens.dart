@@ -4,9 +4,13 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hohotree/Screens/GuideScreen/GuideScreen.dart';
 import 'package:hohotree/Screens/HomeScreen/widget/buildBtn.dart';
+import 'package:hohotree/Screens/MyPlantsScreen/MyPlantsScreen.dart';
+import 'package:hohotree/Screens/PlantIssuesScreen/PlantIssuesScreen.dart';
 import 'package:hohotree/Screens/ProfileScreen/profileScreens.dart';
 import 'package:hohotree/Services/MoMoService/momoService.dart';
+import 'package:hohotree/router/app_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -24,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Uint8List? _imageBytes;
   String _result = "";
   int _currentIndex = 0;
+  bool isChatIcon = false;
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
@@ -44,21 +49,24 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
-  Future<void> _handlePayment() async {
-  final payUrl = await MomoService.createMomoPayment("1000");
-
-  if (payUrl != null) {
-    if (await canLaunchUrl(Uri.parse(payUrl))) {
-      await launchUrl(Uri.parse(payUrl), mode: LaunchMode.externalApplication);
-    } else {
-      print("Không thể mở URL: $payUrl");
-    }
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Không thể tạo thanh toán")),
-    );
+  void handleMessage() {
+    print("Mở tin nhắn...");
   }
-}
+  Future<void> _handlePayment() async {
+    final payUrl = await MomoService.createMomoPayment("1000");
+
+    if (payUrl != null) {
+      if (await canLaunchUrl(Uri.parse(payUrl))) {
+        await launchUrl(Uri.parse(payUrl), mode: LaunchMode.externalApplication);
+      } else {
+        print("Không thể mở URL: $payUrl");
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Không thể tạo thanh toán")),
+      );
+    }
+  }
 
   Future<void> _analyzeImage(File imageFile) async {
     var request = http.MultipartRequest(
@@ -89,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     setState(() {
       _result = jsonData['disease'] ?? 'Không xác định';
+      isChatIcon = !isChatIcon;
     });
   }
 
@@ -98,6 +107,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (_currentIndex == 3) {
       body = const ProfileScreen();
+    }
+    else if (_currentIndex == 2) {
+      body = GuideScreen();
+    }
+    else if (_currentIndex == 1) {
+      body = MyPlantsScreen();
     } else {
       body = Stack(
         children: [
@@ -105,6 +120,35 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Image.asset(
               'images/bg9.png',
               fit: BoxFit.cover,
+            ),
+          ),
+          Positioned(
+            top: 40,
+            right: 20,
+            child: GestureDetector(
+              onTap: () {
+                if (isChatIcon) {
+                  handleMessage();
+                } else {
+                  _handlePayment();
+                }
+              },
+
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.9),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2))
+                  ],
+                ),
+                child: Icon(
+                  isChatIcon ? Icons.message : Icons.attach_money,
+                  color: Colors.green,
+                  size: 28,
+                ),
+              ),
             ),
           ),
           Column(
@@ -125,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 20),
               buildButton('Quét cây trồng', _pickImage),
               const SizedBox(height: 10),
-              buildButton('Những vấn đề chung', () {}),
+              buildButton('Những vấn đề chung', () {Navigator.pushReplacementNamed(context, AppRouter.PlIs);}),
               const SizedBox(height: 20),
               if (_imageBytes != null && kIsWeb)
                 Image.memory(_imageBytes!, height: 200)
@@ -136,8 +180,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 _result.isNotEmpty ? _result : 'Kết quả sẽ hiển thị ở đây',
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
               ),
-              const SizedBox(height: 10),
-              buildButton('Thanh toán MoMo', _handlePayment),
             ],
           ),
         ],
@@ -166,8 +208,8 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Cây của tôi',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Cài đặt',
+            icon: Icon(Icons.book),
+            label: 'Hướng dẫn',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.supervised_user_circle),

@@ -1,6 +1,6 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.views import APIView # type: ignore
+from rest_framework.response import Response # type: ignore
+from rest_framework import status # type: ignore
 import json
 import uuid
 import requests
@@ -15,7 +15,7 @@ class CreateMoMoPayment(APIView):
         orderInfo = "pay with MoMo"
         partnerCode = "MOMO"
         redirectUrl = "https://webhook.site/..."
-        ipnUrl = "https://webhook.site/..."
+        ipnUrl = "https://339d-2001-ee0-4b4b-4550-3cd1-3e5c-ccd7-fe00.ngrok-free.app/api/callback-momo/"
         amount = request.data.get("amount", "00000")
         orderId = str(uuid.uuid4())
         requestId = str(uuid.uuid4())
