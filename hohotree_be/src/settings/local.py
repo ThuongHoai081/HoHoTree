@@ -19,37 +19,6 @@ HOST = "http://localhost:8000/"
 SUPABASE_URL = "https://kyyiekngpfhpoldvlpmq.supabase.co"
 SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5eWlla25ncGZocG9sZHZscG1xIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MzY4Nzc0NywiZXhwIjoyMDU5MjYzNzQ3fQ.L8HWR-MPEKNnRDuqqEQ92QdtKnqZiMOW16ev9UjOX2E"
 
-
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql_psycopg2",
-#         "NAME": "boilerplate",
-#         "USER": "postgres",
-#         "PASSWORD": "postgres",
-#         "HOST": "localhost",
-#         "PORT": "5432",
-#     }
-# }
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#     # 'default': {
-#     #     'ENGINE': 'django.db.backends.mysql',
-#     #     'NAME': 'hohotree',
-#     #     'USER': 'root',
-#     #     'PASSWORD': '', 
-#     #     'HOST': 'localhost',    
-#     #     'PORT': '3306', 
-#     # }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -65,39 +34,3 @@ DATABASES = {
 # CORS
 CORS_ALLOWED_ORIGINS = ["http://localhost:8000"]
 
-# Logging
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "formatters": {
-#         "verbose": {
-#             "format": "{levelname} {asctime} {filename}:{lineno} >>> {message}",
-#             "style": "{",
-#         },
-#         "simple": {
-#             "format": "{levelname} {message}",
-#             "style": "{",
-#         },
-#     },
-#     "handlers": {
-#         "console": {
-#             "class": "logging.StreamHandler",
-#             "formatter": "verbose",
-#         },
-#     },
-#     "root": {
-#         "handlers": ["console"],
-#         "level": "INFO",
-#     },
-#     "loggers": {
-#         "django": {
-#             "handlers": ["console"],
-#             "level": "INFO",
-#             "propagate": False,
-#         },
-#         "django.db": {
-#             # database level logging
-#             "level": "DEBUG"
-#         },
-#     },
-# }

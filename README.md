@@ -1,7 +1,7 @@
 # HoHoTree
 ```bash
 hohotree_be/                  # Thư mục gốc của backend
-│── hohotree_be/              # Cấu hình chính Django
+│── src/              # Cấu hình chính Django
 │   ├── api/                  # API tổng
 │   │   ├── __init__.py
 │   │   ├── urls.py           # URL API tổng

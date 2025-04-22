@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-qzru&y5lck#(&67k4q-j$)r%qzwg&nnv6z%@gs2n9frty#kk+n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,14 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hohotree_be.plant_disease',
-    'hohotree_be.users',
+    'src.plant_disease',
+    'src.users',
     'rest_framework',
     'corsheaders',
     "django_seed",
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,10 +55,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
+CORS_ALLOW_ALL_ORIGINS = True
 
-ROOT_URLCONF = 'hohotree_be.urls'
+
+ROOT_URLCONF = 'src.urls'
 
 TEMPLATES = [
     {
@@ -75,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'hohotree_be.wsgi.application'
+WSGI_APPLICATION = 'src.wsgi.application'
 
 
 AUTH_USER_MODEL = 'users.User'
@@ -142,12 +144,3 @@ STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'minhhoangfc8a@gmail.com'
-EMAIL_HOST_PASSWORD = 'fknt bixb wtoj fkuj'
-CORS_ALLOW_ALL_ORIGINS = True

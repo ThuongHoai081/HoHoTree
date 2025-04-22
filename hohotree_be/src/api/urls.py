@@ -20,10 +20,10 @@ from src.plant_disease.views import predict_image
 from src.users.views import RegisterView, ActivateUserView, SupabaseLoginView, SupabaseRefreshTokenView
 
 urlpatterns = [
-    path("plant-disease/", include("hohotree_be.plant_disease.urls")),
+    path("plant-disease/", include("src.plant_disease.urls")),
 
     # Supabase Auth
-    path("auth/", include("hohotree_be.users.urls")),
+    path("auth/", include("src.users.urls")),
     path("auth/register/", RegisterView.as_view(), name="register"),
     path("auth/activate/<slug:token>/", ActivateUserView.as_view(), name="activate"),
     path("auth/login/", SupabaseLoginView.as_view(), name="login"),
