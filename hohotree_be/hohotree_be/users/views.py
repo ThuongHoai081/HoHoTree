@@ -22,7 +22,6 @@ class RegisterView(APIView):
             password = serializer.validated_data['password']
             fullname = serializer.validated_data['full_name']
 
-            # Đăng ký user trên Supabase
             response = supabase.auth.sign_up({
                 "full_name": fullname,
                 "email": email,
@@ -44,7 +43,7 @@ class RegisterView(APIView):
                 )
 
             return Response(
-                {'message': 'Vui lòng kiểm tra email để xác thực tài khoản.', "status": "201"},
+                {'message': 'Đăng ký thành công. Vui lòng kiểm tra email để xác thực.', 'user': user_data},
                 status=status.HTTP_201_CREATED
             )
         print("Dữ liệu không hợp lệ:", serializer.errors)
@@ -114,7 +113,8 @@ class SupabaseLoginView(APIView):
         return Response({
             "access_token": response.session.access_token,
             "refresh_token": response.session.refresh_token,
-            "status": "200"
+            "status": "200",
+            "user": user
         }, status=status.HTTP_200_OK)
 
 

@@ -5,6 +5,7 @@ import 'package:hohotree/data/dtos/auth/register_request_dto.dart';
 import 'package:hohotree/router/app_router.dart';
 import '../../data/models/base_response.dart';
 import '../LoginScreen/loginScreen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -42,7 +43,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (response.statusCode == 201) {
       CustomSnackBar.show(
           context, response.message ?? "Registration successful", true);
+  
+      const emailUrl = 'https://mail.google.com/';
+      if (await canLaunchUrl(Uri.parse(emailUrl))) {
+        await launchUrl(Uri.parse(emailUrl), mode: LaunchMode.externalApplication);
+      }
+      
       Navigator.pushReplacementNamed(context, AppRouter.login);
+      debugPrint("Register successful: ${response.message}");
+    } else if (response.statusCode == 400) {
+      CustomSnackBar.show(
+        context,
+        response.message ?? "Đăng ký thất bại. Email có thể đã được sử dụng.",
+        false,
+      );
     } else {
       CustomSnackBar.show(
           context, response.message ?? "Registration failed", false);
