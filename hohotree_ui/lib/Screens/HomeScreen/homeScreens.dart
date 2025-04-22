@@ -15,7 +15,6 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -49,15 +48,18 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
+
   void handleMessage() {
     print("Mở tin nhắn...");
   }
+
   Future<void> _handlePayment() async {
     final payUrl = await MomoService.createMomoPayment("1000");
 
     if (payUrl != null) {
       if (await canLaunchUrl(Uri.parse(payUrl))) {
-        await launchUrl(Uri.parse(payUrl), mode: LaunchMode.externalApplication);
+        await launchUrl(Uri.parse(payUrl),
+            mode: LaunchMode.externalApplication);
       } else {
         print("Không thể mở URL: $payUrl");
       }
@@ -74,7 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
       Uri.parse('http://localhost:8000/api/plant/'),
     );
 
-    request.files.add(await http.MultipartFile.fromPath('file', imageFile.path));
+    request.files
+        .add(await http.MultipartFile.fromPath('file', imageFile.path));
     var response = await request.send();
     var responseData = await response.stream.bytesToString();
     var jsonData = json.decode(responseData);
@@ -90,7 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
       Uri.parse('http://localhost:8000/api/plant/'),
     );
 
-    request.files.add(http.MultipartFile.fromBytes('file', imageBytes, filename: 'image.jpg'));
+    request.files.add(http.MultipartFile.fromBytes('file', imageBytes,
+        filename: 'image.jpg'));
     var response = await request.send();
     var responseData = await response.stream.bytesToString();
     var jsonData = json.decode(responseData);
@@ -107,11 +111,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (_currentIndex == 3) {
       body = const ProfileScreen();
-    }
-    else if (_currentIndex == 2) {
+    } else if (_currentIndex == 2) {
       body = GuideScreen();
-    }
-    else if (_currentIndex == 1) {
+    } else if (_currentIndex == 1) {
       body = MyPlantsScreen();
     } else {
       body = Stack(
@@ -133,14 +135,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   _handlePayment();
                 }
               },
-
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.9),
                   shape: BoxShape.circle,
                   boxShadow: [
-                    BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2))
+                    BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 4,
+                        offset: Offset(0, 2))
                   ],
                 ),
                 child: Icon(
@@ -169,7 +173,14 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 20),
               buildButton('Quét cây trồng', _pickImage),
               const SizedBox(height: 10),
-              buildButton('Những vấn đề chung', () {Navigator.pushReplacementNamed(context, AppRouter.PlIs);}),
+              buildButton('Những vấn đề chung', () {
+                Navigator.pushReplacementNamed(context, AppRouter.PlIs);
+              }),
+              const SizedBox(height: 10),
+              buildButton('Hỏi đáp về cây trồng 💬', () {
+                Navigator.pushNamed(context,
+                    AppRouter.chat); 
+              }),
               const SizedBox(height: 20),
               if (_imageBytes != null && kIsWeb)
                 Image.memory(_imageBytes!, height: 200)
@@ -178,7 +189,10 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 10),
               Text(
                 _result.isNotEmpty ? _result : 'Kết quả sẽ hiển thị ở đây',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
             ],
           ),

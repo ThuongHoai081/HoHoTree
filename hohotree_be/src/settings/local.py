@@ -34,3 +34,6 @@ DATABASES = {
 # CORS
 CORS_ALLOWED_ORIGINS = ["http://localhost:8000"]
 
+#groq
+GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions'
+GROQ_API_KEY = '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'
