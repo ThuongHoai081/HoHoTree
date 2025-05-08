@@ -16,23 +16,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _handleLogin() async {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-    LoginRequestDTO request = LoginRequestDTO(email: email, password: password);
-
-    final BaseResponse response = await AuthService.login(request);
-    print(response);
-    if (response.statusCode == 200) {
-      CustomSnackBar.show(
-          context, response.message ?? "Login successful", true);
-      Navigator.pushReplacementNamed(context, AppRouter.home);
-    } else {
-      CustomSnackBar.show(context, response.message ?? "Login failed", false);
-      debugPrint("Login failed: ${response.message}");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,5 +121,22 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
     );
+  }
+
+  void _handleLogin() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+    LoginRequestDTO request = LoginRequestDTO(email: email, password: password);
+
+    final BaseResponse response = await AuthService.login(request);
+    print(response);
+    if (response.statusCode == 200) {
+      CustomSnackBar.show(
+          context, response.message ?? "Login successful", true);
+      Navigator.pushReplacementNamed(context, AppRouter.home);
+    } else {
+      CustomSnackBar.show(context, response.message ?? "Login failed", false);
+      debugPrint("Login failed: ${response.message}");
+    }
   }
 }

@@ -7,49 +7,6 @@ class ProfileScreen extends StatelessWidget {
   final bool isLoggedIn = false;
   final bool isVip = false;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: const Text('Trang cá nhân'),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Stack(
-        children: [
-          
-          Positioned.fill(
-            child: Image.asset(
-              'images/bg5.jpg',
-              fit: BoxFit.cover,
-              color: Colors.black.withOpacity(0.3),
-              colorBlendMode: BlendMode.darken,
-            ),
-          ),
-
-          Center(
-            child: isLoggedIn
-                ? _buildUserProfile()
-                : ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, AppRouter.login);
-                    },
-                    icon: const Icon(Icons.login),
-                    label: const Text("Đăng nhập"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                      textStyle: const TextStyle(fontSize: 18),
-                    ),
-                  ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildUserProfile() {
     const String avatarUrl = 'https://i.pravatar.cc/150?img=10';
     const String userName = 'Lê Minh Hoàng';
@@ -84,7 +41,8 @@ class ProfileScreen extends StatelessWidget {
         const SizedBox(height: 16),
         Text(
           userName,
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+          style: const TextStyle(
+              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         const SizedBox(height: 8),
         Text(
@@ -100,7 +58,8 @@ class ProfileScreen extends StatelessWidget {
           ),
           child: Text(
             isVip ? 'Tài khoản VIP' : 'Tài khoản Thường',
-            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),
         const SizedBox(height: 24),
@@ -116,6 +75,48 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: const Text('Trang cá nhân'),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'images/bg5.jpg',
+              fit: BoxFit.cover,
+              color: Colors.black.withOpacity(0.3),
+              colorBlendMode: BlendMode.darken,
+            ),
+          ),
+          Center(
+            child: isLoggedIn
+                ? _buildUserProfile()
+                : ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, AppRouter.login);
+                    },
+                    icon: const Icon(Icons.login),
+                    label: const Text("Đăng nhập"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32, vertical: 12),
+                      textStyle: const TextStyle(fontSize: 18),
+                    ),
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }

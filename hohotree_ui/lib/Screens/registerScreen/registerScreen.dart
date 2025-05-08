@@ -21,49 +21,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  void _handleRegister() async {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-    String confirmPassword = _confirmPasswordController.text;
-    String fullName = _fullNameController.text;
-
-    if (password != confirmPassword) {
-      CustomSnackBar.show(context, "Passwords do not match", false);
-      return;
-    }
-
-    RegisterRequestDTO request = RegisterRequestDTO(
-      fullName: fullName,
-      email: email,
-      password: password,
-    );
-
-    final BaseResponse response = await AuthService.register(request);
-    debugPrint("Register response: ${response.statusCode}");
-    if (response.statusCode == 201) {
-      CustomSnackBar.show(
-          context, response.message ?? "Registration successful", true);
-  
-      const emailUrl = 'https://mail.google.com/';
-      if (await canLaunchUrl(Uri.parse(emailUrl))) {
-        await launchUrl(Uri.parse(emailUrl), mode: LaunchMode.externalApplication);
-      }
-      
-      Navigator.pushReplacementNamed(context, AppRouter.login);
-      debugPrint("Register successful: ${response.message}");
-    } else if (response.statusCode == 400) {
-      CustomSnackBar.show(
-        context,
-        response.message ?? "Đăng ký thất bại. Email có thể đã được sử dụng.",
-        false,
-      );
-    } else {
-      CustomSnackBar.show(
-          context, response.message ?? "Registration failed", false);
-      debugPrint("Register failed: ${response.message}");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,5 +147,49 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ],
       ),
     );
+  }
+
+  void _handleRegister() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+    String confirmPassword = _confirmPasswordController.text;
+    String fullName = _fullNameController.text;
+
+    if (password != confirmPassword) {
+      CustomSnackBar.show(context, "Passwords do not match", false);
+      return;
+    }
+
+    RegisterRequestDTO request = RegisterRequestDTO(
+      fullName: fullName,
+      email: email,
+      password: password,
+    );
+
+    final BaseResponse response = await AuthService.register(request);
+    debugPrint("Register response: ${response.statusCode}");
+    if (response.statusCode == 201) {
+      CustomSnackBar.show(
+          context, response.message ?? "Registration successful", true);
+
+      const emailUrl = 'https://mail.google.com/';
+      if (await canLaunchUrl(Uri.parse(emailUrl))) {
+        await launchUrl(Uri.parse(emailUrl),
+            mode: LaunchMode.externalApplication);
+      }
+
+      Navigator.pushReplacementNamed(context, AppRouter.login);
+      debugPrint("Register successful: ${response.message}");
+    } else if (response.statusCode == 400) {
+      CustomSnackBar.show(
+        context,
+        response.message ?? "Đăng ký thất bại. Email có thể đã được sử dụng.",
+        false,
+      );
+    } else {
+      CustomSnackBar.show(
+          context, response.message ?? "Registration failed", false);
+      debugPrint("Register failed: ${response.message}");
+    }
   }
 }
