@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hohotree/Screens/MsgScreen/CustomSnackBar.dart';
-import 'package:hohotree/Screens/registerScreen/registerScreen.dart';
 import 'package:hohotree/Services/AuthService/authService.dart';
+import 'package:hohotree/router/app_router.dart';
+import '../../data/dtos/auth/login_request_dto.dart';
+import '../../data/models/base_response.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,12 +19,20 @@ class _LoginScreenState extends State<LoginScreen> {
   void _handleLogin() async {
     String email = _emailController.text;
     String password = _passwordController.text;
-    
-    String message = await AuthService.login(email, password);
-    
-    bool isSuccess = message.startsWith("Login success");
-    CustomSnackBar.show(context, message, isSuccess);
+    LoginRequestDTO request = LoginRequestDTO(email: email, password: password);
+
+    final BaseResponse response = await AuthService.login(request);
+    print(response);
+    if (response.statusCode == 200) {
+      CustomSnackBar.show(
+          context, response.message ?? "Login successful", true);
+      Navigator.pushReplacementNamed(context, AppRouter.home);
+    } else {
+      CustomSnackBar.show(context, response.message ?? "Login failed", false);
+      debugPrint("Login failed: ${response.message}");
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const Text(
                       "Welcome",
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 5),
                     const Text(
@@ -66,7 +77,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(color: Colors.grey),
                     ),
                     const SizedBox(height: 20),
-                    
                     TextField(
                       controller: _emailController,
                       decoration: InputDecoration(
@@ -77,7 +87,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-
                     TextField(
                       controller: _passwordController,
                       obscureText: true,
@@ -89,7 +98,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -101,7 +109,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: const Text("Sign in", style: TextStyle(fontSize: 16)),
+                        child: const Text("Sign in",
+                            style: TextStyle(fontSize: 16)),
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -111,12 +120,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         const Text("Create account?"),
                         TextButton(
                           onPressed: () {
-                            Navigator.pushReplacement(
+                            Navigator.pushReplacementNamed(
                               context,
-                              MaterialPageRoute(builder: (context) => RegisterScreen()),
+                              AppRouter.register,
                             );
                           },
-                          child: const Text("Sign up", style: TextStyle(color: Colors.green)),
+                          child: const Text("Sign up",
+                              style: TextStyle(color: Colors.green)),
                         ),
                       ],
                     ),
